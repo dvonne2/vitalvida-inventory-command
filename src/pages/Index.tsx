@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -18,6 +19,7 @@ import CashLockedInventory from '@/components/CashLockedInventory';
 import GamifiedScorecard from '@/components/GamifiedScorecard';
 import FraudAlertsPanel from '@/components/FraudAlertsPanel';
 import EnhancedDashboardOverview from '@/components/EnhancedDashboardOverview';
+import LiveDAInventoryMap from '@/components/LiveDAInventoryMap';
 
 const Index = () => {
   const [lastRefresh, setLastRefresh] = useState(new Date());
@@ -124,9 +126,12 @@ const Index = () => {
 
         {/* Main Dashboard Tabs */}
         <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-5 md:grid-cols-10 bg-slate-800/50 border border-slate-700">
+          <TabsList className="grid w-full grid-cols-6 md:grid-cols-11 bg-slate-800/50 border border-slate-700">
             <TabsTrigger value="overview" className="data-[state=active]:bg-indigo-500 data-[state=active]:text-white text-xs">
               Overview
+            </TabsTrigger>
+            <TabsTrigger value="live-inventory" className="data-[state=active]:bg-emerald-500 data-[state=active]:text-white text-xs">
+              🗺️ Live Map
             </TabsTrigger>
             <TabsTrigger value="da-stock-health" className="data-[state=active]:bg-blue-500 data-[state=active]:text-white text-xs">
               DA Stock Health
@@ -159,6 +164,10 @@ const Index = () => {
 
           <TabsContent value="overview" className="space-y-4">
             <EnhancedDashboardOverview />
+          </TabsContent>
+
+          <TabsContent value="live-inventory" className="space-y-4">
+            <LiveDAInventoryMap />
           </TabsContent>
 
           <TabsContent value="da-stock-health" className="space-y-4">
