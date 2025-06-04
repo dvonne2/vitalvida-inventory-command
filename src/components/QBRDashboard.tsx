@@ -57,19 +57,27 @@ const kpiData = [
 const QBRDashboard = () => {
   const getTrendIcon = (trend: string) => {
     switch (trend) {
-      case "up": return <TrendingUp className="h-4 w-4 text-green-400" />;
-      case "down": return <TrendingDown className="h-4 w-4 text-red-400" />;
-      default: return <Minus className="h-4 w-4 text-slate-400" />;
+      case "up": 
+        return <TrendingUp className="h-4 w-4 text-green-400" />;
+      case "down": 
+        return <TrendingDown className="h-4 w-4 text-red-400" />;
+      default: 
+        return <Minus className="h-4 w-4 text-slate-400" />;
     }
   };
 
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case "Good": return "✅";
-      case "Critical": return "❌";
-      case "Improve": return "⚠️";
-      case "Missed": return "⚠️";
-      default: return "ℹ️";
+      case "Good": 
+        return "✅";
+      case "Critical": 
+        return "❌";
+      case "Improve": 
+        return "⚠️";
+      case "Missed": 
+        return "⚠️";
+      default: 
+        return "ℹ️";
     }
   };
 
@@ -166,7 +174,7 @@ const QBRDashboard = () => {
               <span className="text-blue-400 font-bold">3.</span>
               <div>
                 <p className="text-blue-400 font-medium">Focus: Reduce Mismatch Resolution Time</p>
-                <p className="text-slate-300 text-sm">Average 41h vs target <24h. Implement faster escalation procedures for unresolved mismatches.</p>
+                <p className="text-slate-300 text-sm">Average 41h vs target less than 24h. Implement faster escalation procedures for unresolved mismatches.</p>
               </div>
             </div>
           </div>
