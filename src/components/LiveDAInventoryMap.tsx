@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -323,7 +322,7 @@ const LiveDAInventoryMap = () => {
                             <span className="text-white">{da.name}</span>
                             <div className="flex items-center gap-2">
                               <span className="text-slate-400">{da.unitsTotal} units</span>
-                              <Badge size="sm" className={`${getDaysLeftColor(da.daysLeft)} border-0 text-xs`}>
+                              <Badge className={`${getDaysLeftColor(da.daysLeft)} border-0 text-xs`}>
                                 {da.daysLeft}d
                               </Badge>
                             </div>
