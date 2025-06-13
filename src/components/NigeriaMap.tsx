@@ -78,7 +78,7 @@ const NigeriaMap: React.FC<NigeriaMapProps> = ({ stateData, onStateClick, select
       <div className="flex items-center justify-center gap-6 mb-4">
         <div className="flex items-center gap-2">
           <div className="w-4 h-4 bg-red-500 rounded"></div>
-          <span className="text-slate-300 text-sm">Overstocked (>70% unsold)</span>
+          <span className="text-slate-300 text-sm">Overstocked ({'>'}70% unsold)</span>
         </div>
         <div className="flex items-center gap-2">
           <div className="w-4 h-4 bg-yellow-500 rounded"></div>
