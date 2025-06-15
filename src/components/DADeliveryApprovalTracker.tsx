@@ -1,11 +1,14 @@
 
+// --- Fully adapted from DAStockSoldTracker, now with "Delivery Approval Tracker" focus ---
+
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { CheckCircle, XCircle, Clock, Lock, AlertTriangle, Shield } from 'lucide-react';
+import { CheckCircle, XCircle, Lock, Shield } from 'lucide-react';
 
+// Type matches original DAStockSoldTracker workflow (approval, penalty, bonus, fraud)
 interface DeliveryOrder {
   orderNo: string;
   da: string;
@@ -27,16 +30,16 @@ interface DeliveryOrder {
   fraudAlert: boolean;
 }
 
-interface DAStockSoldTrackerProps {
+interface DADeliveryApprovalTrackerProps {
   userRole: 'inventory_manager' | 'accountant' | 'telesales' | 'admin';
   userId: string;
 }
 
-const DAStockSoldTracker = ({ userRole, userId }: DAStockSoldTrackerProps) => {
+const DADeliveryApprovalTracker = ({ userRole, userId }: DADeliveryApprovalTrackerProps) => {
   const [orders, setOrders] = useState<DeliveryOrder[]>([]);
   const [loading, setLoading] = useState(false);
 
-  // Mock data - replace with actual API calls
+  // Mock data from DAStockSoldTracker; in real use, replace with backend call
   useEffect(() => {
     const mockOrders: DeliveryOrder[] = [
       {
@@ -51,8 +54,8 @@ const DAStockSoldTracker = ({ userRole, userId }: DAStockSoldTrackerProps) => {
         telesalesConfirmed: true,
         countedAsSold: 10,
         bonusEligible: 10,
-        timerStarted: new Date(Date.now() - 14 * 60 * 60 * 1000), // 14 hours ago
-        timeRemaining: 4.35, // 4h 21m left
+        timerStarted: new Date(Date.now() - 14 * 60 * 60 * 1000),
+        timeRemaining: 4.35,
         approved: false,
         approvedBy: null,
         approvedAt: null,
@@ -71,8 +74,8 @@ const DAStockSoldTracker = ({ userRole, userId }: DAStockSoldTrackerProps) => {
         telesalesConfirmed: false,
         countedAsSold: 0,
         bonusEligible: 0,
-        timerStarted: new Date(Date.now() - 5.5 * 60 * 60 * 1000), // 5.5 hours ago
-        timeRemaining: 12.5, // 12h 30m left
+        timerStarted: new Date(Date.now() - 5.5 * 60 * 60 * 1000),
+        timeRemaining: 12.5,
         approved: false,
         approvedBy: null,
         approvedAt: null,
@@ -91,8 +94,8 @@ const DAStockSoldTracker = ({ userRole, userId }: DAStockSoldTrackerProps) => {
         telesalesConfirmed: true,
         countedAsSold: 4,
         bonusEligible: 4,
-        timerStarted: new Date(Date.now() - 19 * 60 * 60 * 1000), // 19 hours ago (overdue)
-        timeRemaining: -1, // Overdue
+        timerStarted: new Date(Date.now() - 19 * 60 * 60 * 1000),
+        timeRemaining: -1,
         approved: false,
         approvedBy: null,
         approvedAt: null,
@@ -103,27 +106,22 @@ const DAStockSoldTracker = ({ userRole, userId }: DAStockSoldTrackerProps) => {
     setOrders(mockOrders);
   }, []);
 
-  // Timer update effect
+  // Timer logic; penalty if overdue, updates timeRemaining
   useEffect(() => {
     const interval = setInterval(() => {
-      setOrders(prevOrders => 
+      setOrders(prevOrders =>
         prevOrders.map(order => {
           if (!order.timerStarted || order.approved) return order;
-          
           const elapsed = (Date.now() - order.timerStarted.getTime()) / (1000 * 60 * 60);
           const remaining = 18 - elapsed;
-          
-          // Apply penalty if overdue and not already applied
           if (remaining <= 0 && !order.penaltyApplied) {
             console.log(`Penalty applied to order ${order.orderNo}: ₦2,000 deduction`);
             return { ...order, timeRemaining: remaining, penaltyApplied: true };
           }
-          
           return { ...order, timeRemaining: remaining };
         })
       );
-    }, 60000); // Update every minute
-
+    }, 60000);
     return () => clearInterval(interval);
   }, []);
 
@@ -142,9 +140,7 @@ const DAStockSoldTracker = ({ userRole, userId }: DAStockSoldTrackerProps) => {
   const handleApproveDelivery = async (orderNo: string) => {
     setLoading(true);
     try {
-      // Simulate API call for approval
       await new Promise(resolve => setTimeout(resolve, 1000));
-      
       setOrders(prevOrders =>
         prevOrders.map(order =>
           order.orderNo === orderNo
@@ -157,8 +153,7 @@ const DAStockSoldTracker = ({ userRole, userId }: DAStockSoldTrackerProps) => {
             : order
         )
       );
-      
-      console.log(`Order ${orderNo} approved by ${userId} at ${new Date().toISOString()}`);
+      console.log(`Order ${orderNo} delivery approved by ${userId} at ${new Date().toISOString()}`);
     } catch (error) {
       console.error('Failed to approve delivery:', error);
     } finally {
@@ -191,10 +186,8 @@ const DAStockSoldTracker = ({ userRole, userId }: DAStockSoldTrackerProps) => {
     if (hours <= 0) {
       return <span className="text-red-500 font-bold">⛔ Overdue</span>;
     }
-    
     const h = Math.floor(hours);
     const m = Math.floor((hours - h) * 60);
-    
     if (hours < 2) {
       return <span className="text-red-400 font-bold">{h}h {m}m left</span>;
     } else if (hours < 6) {
@@ -212,7 +205,6 @@ const DAStockSoldTracker = ({ userRole, userId }: DAStockSoldTrackerProps) => {
         </Badge>
       );
     }
-
     if (order.timeRemaining <= 0) {
       return (
         <Badge className="bg-red-600 text-white border-0">
@@ -220,7 +212,6 @@ const DAStockSoldTracker = ({ userRole, userId }: DAStockSoldTrackerProps) => {
         </Badge>
       );
     }
-
     if (order.fraudAlert) {
       return (
         <Badge className="bg-red-600 text-white border-0">
@@ -228,7 +219,6 @@ const DAStockSoldTracker = ({ userRole, userId }: DAStockSoldTrackerProps) => {
         </Badge>
       );
     }
-
     if (userRole !== 'inventory_manager') {
       return (
         <Badge className="bg-gray-500 text-white border-0">
@@ -236,7 +226,6 @@ const DAStockSoldTracker = ({ userRole, userId }: DAStockSoldTrackerProps) => {
         </Badge>
       );
     }
-
     if (!canApproveDelivery(order)) {
       return (
         <Button disabled size="sm" className="bg-gray-600 text-gray-300">
@@ -245,7 +234,6 @@ const DAStockSoldTracker = ({ userRole, userId }: DAStockSoldTrackerProps) => {
         </Button>
       );
     }
-
     return (
       <Button
         onClick={() => handleApproveDelivery(order.orderNo)}
@@ -263,8 +251,8 @@ const DAStockSoldTracker = ({ userRole, userId }: DAStockSoldTrackerProps) => {
       <CardHeader>
         <CardTitle className="text-white flex items-center gap-2">
           <Shield className="h-5 w-5 text-blue-400" />
-          DA Stock Sold Tracker (This Week) — Approval Required to Finalize Delivery
-          <Badge className="bg-blue-500/20 text-blue-400 border-blue-500">
+          Delivery Approval Tracker (This Week) — Approval Required to Finalize Delivery
+          <Badge className={`ml-2 ${userRole === "inventory_manager" ? "bg-blue-500/20 text-blue-400 border-blue-500" : userRole === "accountant" ? "bg-green-500/20 text-green-400 border-green-500" : userRole === "telesales" ? "bg-purple-500/20 text-purple-400 border-purple-500" : "bg-red-500/20 text-red-400 border-red-500"}`}>
             Role: {userRole.replace('_', ' ').toUpperCase()}
           </Badge>
         </CardTitle>
@@ -286,7 +274,7 @@ const DAStockSoldTracker = ({ userRole, userId }: DAStockSoldTrackerProps) => {
                 <TableHead className="text-slate-300">Payment ✓</TableHead>
                 <TableHead className="text-slate-300">OTP ✓</TableHead>
                 <TableHead className="text-slate-300">Telesales ✓</TableHead>
-                <TableHead className="text-slate-300">Counted as Sold</TableHead>
+                <TableHead className="text-slate-300">Counted as Delivered</TableHead>
                 <TableHead className="text-slate-300">Bonus Status</TableHead>
                 <TableHead className="text-slate-300">⏱ Timer</TableHead>
                 <TableHead className="text-slate-300">✅ Approve Delivery</TableHead>
@@ -350,4 +338,4 @@ const DAStockSoldTracker = ({ userRole, userId }: DAStockSoldTrackerProps) => {
   );
 };
 
-export default DAStockSoldTracker;
+export default DADeliveryApprovalTracker;

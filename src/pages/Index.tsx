@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -14,8 +13,7 @@ import QBRDashboard from '@/components/QBRDashboard';
 import RestockGenerator from '@/components/RestockGenerator';
 import MotivationalCards from '@/components/MotivationalCards';
 import DAStockHealth from '@/components/DAStockHealth';
-import DASalesTracker from '@/components/DASalesTracker';
-import DAStockSoldTracker from '@/components/DAStockSoldTracker';
+import DADeliveryApprovalTracker from '@/components/DADeliveryApprovalTracker';
 import AccountantPaymentPanel from '@/components/AccountantPaymentPanel';
 import TelesalesConfirmationPanel from '@/components/TelesalesConfirmationPanel';
 import CashLockedInventory from '@/components/CashLockedInventory';
@@ -169,9 +167,6 @@ const Index = () => {
             <TabsTrigger value="live-inventory" className="data-[state=active]:bg-emerald-500 data-[state=active]:text-white text-xs">
               🗺️ Live Map
             </TabsTrigger>
-            <TabsTrigger value="approval-tracker" className="data-[state=active]:bg-orange-500 data-[state=active]:text-white text-xs">
-              🔐 Approval Tracker
-            </TabsTrigger>
             <TabsTrigger value="accountant-panel" className="data-[state=active]:bg-green-500 data-[state=active]:text-white text-xs">
               💳 Accountant
             </TabsTrigger>
@@ -182,7 +177,7 @@ const Index = () => {
               DA Stock Health
             </TabsTrigger>
             <TabsTrigger value="sales-tracker" className="data-[state=active]:bg-green-500 data-[state=active]:text-white text-xs">
-              Sales Tracker
+              Delivery Approval Tracker
             </TabsTrigger>
             <TabsTrigger value="cash-locked" className="data-[state=active]:bg-yellow-500 data-[state=active]:text-white text-xs">
               Cash Locked
@@ -207,10 +202,6 @@ const Index = () => {
 
           <TabsContent value="live-inventory" className="space-y-4">
             <LiveDAInventoryMap />
-          </TabsContent>
-
-          <TabsContent value="approval-tracker" className="space-y-4">
-            <DAStockSoldTracker userRole={userRole} userId="current_user" />
           </TabsContent>
 
           <TabsContent value="accountant-panel" className="space-y-4">
@@ -245,8 +236,9 @@ const Index = () => {
             <DAStockHealth />
           </TabsContent>
 
+          {/* Updated "sales-tracker" to hold Delivery Approval Tracker */}
           <TabsContent value="sales-tracker" className="space-y-4">
-            <DASalesTracker />
+            <DADeliveryApprovalTracker userRole={userRole} userId="current_user" />
           </TabsContent>
 
           <TabsContent value="cash-locked" className="space-y-4">
