@@ -1,9 +1,10 @@
+
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { AlertTriangle, Package, TrendingUp, Users, CheckCircle, XCircle, Clock, MessageSquare, Camera, Flag, Shield, Trophy, DollarSign, UserCheck } from 'lucide-react';
+import { AlertTriangle, Package, TrendingUp, Users, CheckCircle, XCircle, Clock, MessageSquare, Camera, Flag, Shield, Trophy, DollarSign, UserCheck, Map, CreditCard, Phone } from 'lucide-react';
 import StockHealthTable from '@/components/StockHealthTable';
 import AlertsFeed from '@/components/AlertsFeed';
 import ReplenishmentTracker from '@/components/ReplenishmentTracker';
@@ -160,18 +161,21 @@ const Index = () => {
 
         {/* Main Dashboard Tabs */}
         <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-6 md:grid-cols-12 bg-slate-800/50 border border-slate-700">
+          <TabsList className="flex overflow-x-auto md:grid md:grid-cols-12 bg-slate-800/50 border border-slate-700 rounded-lg p-1">
             <TabsTrigger value="overview" className="data-[state=active]:bg-indigo-500 data-[state=active]:text-white text-xs">
               Overview
             </TabsTrigger>
-            <TabsTrigger value="live-inventory" className="data-[state=active]:bg-emerald-500 data-[state=active]:text-white text-xs">
-              🗺️ Live Map
+            <TabsTrigger value="live-inventory" className="data-[state=active]:bg-emerald-500 data-[state=active]:text-white text-xs flex items-center gap-1">
+              <Map className="h-4 w-4" />
+              Live Map
             </TabsTrigger>
-            <TabsTrigger value="accountant-panel" className="data-[state=active]:bg-green-500 data-[state=active]:text-white text-xs">
-              💳 Accountant
+            <TabsTrigger value="accountant-panel" className="data-[state=active]:bg-green-500 data-[state=active]:text-white text-xs flex items-center gap-1">
+              <CreditCard className="h-4 w-4" />
+              Accountant
             </TabsTrigger>
-            <TabsTrigger value="telesales-panel" className="data-[state=active]:bg-purple-500 data-[state=active]:text-white text-xs">
-              📞 Telesales
+            <TabsTrigger value="telesales-panel" className="data-[state=active]:bg-purple-500 data-[state=active]:text-white text-xs flex items-center gap-1">
+              <Phone className="h-4 w-4" />
+              Telesales
             </TabsTrigger>
             <TabsTrigger value="da-stock-health" className="data-[state=active]:bg-blue-500 data-[state=active]:text-white text-xs">
               DA Stock Health
