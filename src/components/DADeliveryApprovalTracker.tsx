@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -97,9 +98,17 @@ const DADeliveryApprovalTracker = ({ userRole }: Props) => {
 
       {/* Mobile Cards for each delivery */}
       <div className="space-y-3 mt-3 md:hidden">
-        {filteredDeliveries.map((item) => (
-          <DAApprovalMobileCard key={item.id} delivery={item} />
-        ))}
+        {filteredDeliveries.length > 0 ? (
+          filteredDeliveries.map((item) => (
+            <DAApprovalMobileCard key={item.id} delivery={item} />
+          ))
+        ) : (
+          <Card className="bg-slate-800/50 border-slate-700">
+            <CardContent className="p-4 text-center text-slate-400">
+              No records found.
+            </CardContent>
+          </Card>
+        )}
       </div>
     </div>
   );
