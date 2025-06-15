@@ -7,6 +7,9 @@ import { Label } from "@/components/ui/label";
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table";
 import { UserCheck, Users, Shield, CheckCircle, AlertTriangle, MessageSquare } from "lucide-react";
 import { cn } from "@/lib/utils";
+import DAApprovalTable from "./DAApprovalTable";
+import DAApprovalMobileCard from "./DAApprovalMobileCard";
+import { getStatusBadge } from "./daApprovalUtils";
 
 // Dummy data for the tracker
 const dummyDeliveries = [
@@ -50,19 +53,6 @@ type Props = {
   userId: string;
 };
 
-const getStatusBadge = (status: string) => {
-  switch (status) {
-    case "pending":
-      return <Badge className="bg-yellow-500/20 text-yellow-400 border-yellow-500 text-xs md:text-sm">⏳ Pending</Badge>;
-    case "approved":
-      return <Badge className="bg-green-500/20 text-green-400 border-green-500 text-xs md:text-sm">✅ Approved</Badge>;
-    case "flagged":
-      return <Badge className="bg-red-500/20 text-red-400 border-red-500 text-xs md:text-sm">⚠️ Flagged</Badge>;
-    default:
-      return null;
-  }
-};
-
 const DADeliveryApprovalTracker = ({ userRole }: Props) => {
   const [search, setSearch] = useState("");
 
@@ -100,100 +90,15 @@ const DADeliveryApprovalTracker = ({ userRole }: Props) => {
         </CardContent>
       </Card>
 
-      {/* Approvals Table: make horizontally scrollable on mobile */}
-      <div className="overflow-x-auto w-full">
-        <Table className="min-w-[620px] md:min-w-full text-xs md:text-sm">
-          <TableHeader>
-            <TableRow className="border-slate-700 bg-slate-800/80">
-              <TableHead className="text-slate-400 font-medium px-3 py-2">DA</TableHead>
-              <TableHead className="text-slate-400 font-medium px-3 py-2 whitespace-nowrap">Sales</TableHead>
-              <TableHead className="text-slate-400 font-medium px-3 py-2">Bonus</TableHead>
-              <TableHead className="text-slate-400 font-medium px-3 py-2">State</TableHead>
-              <TableHead className="text-slate-400 font-medium px-3 py-2 whitespace-nowrap hidden xs:table-cell">Customer</TableHead>
-              <TableHead className="text-slate-400 font-medium px-3 py-2 hidden xs:table-cell">Phone</TableHead>
-              <TableHead className="text-slate-400 font-medium px-3 py-2 text-center">Status</TableHead>
-              <TableHead className="text-slate-400 font-medium px-3 py-2 text-center">Action</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {filteredDeliveries.length === 0 ? (
-              <TableRow>
-                <TableCell colSpan={8} className="text-center text-slate-400">
-                  No records found.
-                </TableCell>
-              </TableRow>
-            ) : (
-              filteredDeliveries.map((item) => (
-                <TableRow key={item.id} className="border-slate-700 hover:bg-slate-700/30 transition-colors">
-                  <TableCell className="text-white font-medium px-3 py-2">{item.da}</TableCell>
-                  <TableCell className="text-blue-400 px-3 py-2 text-center">{item.salesCount}</TableCell>
-                  <TableCell className="text-green-400 px-3 py-2 text-center">{item.bonus}</TableCell>
-                  <TableCell className="text-slate-300 px-3 py-2">{item.state}</TableCell>
-                  <TableCell className="text-slate-300 px-3 py-2 whitespace-nowrap hidden xs:table-cell">{item.customer}</TableCell>
-                  <TableCell className="text-slate-300 px-3 py-2 hidden xs:table-cell">{item.phone}</TableCell>
-                  <TableCell className="px-3 py-2 text-center">{getStatusBadge(item.status)}</TableCell>
-                  <TableCell className="px-3 py-2 text-center">
-                    <Button
-                      size="sm"
-                      className={cn(
-                        item.status === "approved"
-                          ? "bg-green-600 hover:bg-green-700 text-white"
-                          : item.status === "pending"
-                          ? "bg-blue-600 hover:bg-blue-700 text-white"
-                          : "bg-red-600 hover:bg-red-700 text-white",
-                        "w-20 text-xs md:text-sm"
-                      )}
-                    >
-                      {item.status === "approved"
-                        ? "View"
-                        : item.status === "flagged"
-                        ? "Flag"
-                        : "Approve"}
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))
-            )}
-          </TableBody>
-        </Table>
+      {/* Approvals Table */}
+      <div className="hidden md:block">
+        <DAApprovalTable deliveries={filteredDeliveries} />
       </div>
 
-      {/* Mobile Cards for each delivery, visible only on mobile (optional, further enhancement for tiny screens) */}
+      {/* Mobile Cards for each delivery */}
       <div className="space-y-3 mt-3 md:hidden">
         {filteredDeliveries.map((item) => (
-          <Card key={item.id} className="bg-slate-800/70 border-slate-700 p-0">
-            <CardContent className="p-3 flex flex-col gap-2">
-              <div className="flex justify-between items-center">
-                <span className="font-semibold text-white">{item.da}</span>
-                {getStatusBadge(item.status)}
-              </div>
-              <div className="flex flex-wrap gap-2 text-xs text-slate-400">
-                <span>Bonus: <span className="text-green-400 font-bold">{item.bonus}</span></span>
-                <span>Sales: <span className="text-blue-400 font-bold">{item.salesCount}</span></span>
-              </div>
-              <div className="text-slate-300 text-xs">
-                <span>{item.customer} ({item.phone})</span>
-                <span className="block">State: {item.state}</span>
-              </div>
-              <Button
-                size="sm"
-                className={cn(
-                  item.status === "approved"
-                    ? "bg-green-600 hover:bg-green-700 text-white"
-                    : item.status === "pending"
-                    ? "bg-blue-600 hover:bg-blue-700 text-white"
-                    : "bg-red-600 hover:bg-red-700 text-white",
-                  "w-full text-xs mt-2"
-                )}
-              >
-                {item.status === "approved"
-                  ? "View"
-                  : item.status === "flagged"
-                  ? "Flag"
-                  : "Approve"}
-              </Button>
-            </CardContent>
-          </Card>
+          <DAApprovalMobileCard key={item.id} delivery={item} />
         ))}
       </div>
     </div>
