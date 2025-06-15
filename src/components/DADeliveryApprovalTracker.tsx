@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils";
 import DAApprovalTable from "./DAApprovalTable";
 import DAApprovalMobileCard from "./DAApprovalMobileCard";
 import { getStatusBadge } from "./daApprovalUtils";
+import { UserRole } from "@/types";
 
 // Dummy data for the tracker
 const dummyDeliveries = [
@@ -49,7 +50,7 @@ const dummyDeliveries = [
 ];
 
 type Props = {
-  userRole: "inventory_manager" | "telesales" | "accountant" | "admin";
+  userRole: UserRole;
   userId: string;
 };
 
