@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -81,7 +80,6 @@ const DADeliveryApprovalTracker = ({ userRole }: Props) => {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="bg-slate-700 border-slate-600 text-white max-w-full md:max-w-xs"
-            size={search.length > 0 ? "default" : "sm"}
           />
           <div className="flex gap-2 flex-wrap">
             <Badge className="bg-indigo-500/20 border-indigo-500 text-indigo-400 text-xs md:text-sm">DA Approvals</Badge>
