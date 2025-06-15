@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { AlertTriangle, Package, TrendingUp, Users, CheckCircle, XCircle, Clock, MessageSquare, Camera, Flag, Shield, Trophy, DollarSign } from 'lucide-react';
+import { AlertTriangle, Package, TrendingUp, Users, CheckCircle, XCircle, Clock, MessageSquare, Camera, Flag, Shield, Trophy, DollarSign, UserCheck } from 'lucide-react';
 import StockHealthTable from '@/components/StockHealthTable';
 import AlertsFeed from '@/components/AlertsFeed';
 import ReplenishmentTracker from '@/components/ReplenishmentTracker';
@@ -15,14 +15,20 @@ import RestockGenerator from '@/components/RestockGenerator';
 import MotivationalCards from '@/components/MotivationalCards';
 import DAStockHealth from '@/components/DAStockHealth';
 import DASalesTracker from '@/components/DASalesTracker';
+import DAStockSoldTracker from '@/components/DAStockSoldTracker';
+import AccountantPaymentPanel from '@/components/AccountantPaymentPanel';
+import TelesalesConfirmationPanel from '@/components/TelesalesConfirmationPanel';
 import CashLockedInventory from '@/components/CashLockedInventory';
 import GamifiedScorecard from '@/components/GamifiedScorecard';
 import FraudAlertsPanel from '@/components/FraudAlertsPanel';
 import EnhancedDashboardOverview from '@/components/EnhancedDashboardOverview';
 import LiveDAInventoryMap from '@/components/LiveDAInventoryMap';
 
+type UserRole = 'inventory_manager' | 'accountant' | 'telesales' | 'admin';
+
 const Index = () => {
   const [lastRefresh, setLastRefresh] = useState(new Date());
+  const [userRole, setUserRole] = useState<UserRole>('inventory_manager');
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -31,6 +37,20 @@ const Index = () => {
 
     return () => clearInterval(interval);
   }, []);
+
+  const handleRoleChange = (role: string) => {
+    setUserRole(role as UserRole);
+  };
+
+  const getRoleColor = (role: UserRole) => {
+    switch (role) {
+      case 'inventory_manager': return 'bg-blue-500/20 text-blue-400 border-blue-500';
+      case 'accountant': return 'bg-green-500/20 text-green-400 border-green-500';
+      case 'telesales': return 'bg-purple-500/20 text-purple-400 border-purple-500';
+      case 'admin': return 'bg-red-500/20 text-red-400 border-red-500';
+      default: return 'bg-gray-500/20 text-gray-400 border-gray-500';
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
@@ -46,7 +66,23 @@ const Index = () => {
               Inventory Manager & DA Supervisor Portal | Last updated: {lastRefresh.toLocaleTimeString()}
             </p>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2">
+              <UserCheck className="h-4 w-4 text-slate-400" />
+              <select 
+                value={userRole} 
+                onChange={(e) => handleRoleChange(e.target.value)}
+                className="bg-slate-700 border border-slate-600 text-white rounded-md px-3 py-1 text-sm"
+              >
+                <option value="inventory_manager">Inventory Manager</option>
+                <option value="accountant">Accountant</option>
+                <option value="telesales">Telesales</option>
+                <option value="admin">Admin</option>
+              </select>
+              <Badge className={getRoleColor(userRole)}>
+                {userRole.replace('_', ' ').toUpperCase()}
+              </Badge>
+            </div>
             <Badge variant="outline" className="bg-green-500/20 text-green-400 border-green-500">
               ● Live SKU Tracking
             </Badge>
@@ -126,12 +162,21 @@ const Index = () => {
 
         {/* Main Dashboard Tabs */}
         <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-6 md:grid-cols-11 bg-slate-800/50 border border-slate-700">
+          <TabsList className="grid w-full grid-cols-6 md:grid-cols-12 bg-slate-800/50 border border-slate-700">
             <TabsTrigger value="overview" className="data-[state=active]:bg-indigo-500 data-[state=active]:text-white text-xs">
               Overview
             </TabsTrigger>
             <TabsTrigger value="live-inventory" className="data-[state=active]:bg-emerald-500 data-[state=active]:text-white text-xs">
               🗺️ Live Map
+            </TabsTrigger>
+            <TabsTrigger value="approval-tracker" className="data-[state=active]:bg-orange-500 data-[state=active]:text-white text-xs">
+              🔐 Approval Tracker
+            </TabsTrigger>
+            <TabsTrigger value="accountant-panel" className="data-[state=active]:bg-green-500 data-[state=active]:text-white text-xs">
+              💳 Accountant
+            </TabsTrigger>
+            <TabsTrigger value="telesales-panel" className="data-[state=active]:bg-purple-500 data-[state=active]:text-white text-xs">
+              📞 Telesales
             </TabsTrigger>
             <TabsTrigger value="da-stock-health" className="data-[state=active]:bg-blue-500 data-[state=active]:text-white text-xs">
               DA Stock Health
@@ -151,12 +196,6 @@ const Index = () => {
             <TabsTrigger value="alerts" className="data-[state=active]:bg-orange-500 data-[state=active]:text-white text-xs">
               Live Alerts
             </TabsTrigger>
-            <TabsTrigger value="replenishment" className="data-[state=active]:bg-cyan-500 data-[state=active]:text-white text-xs">
-              Replenishment
-            </TabsTrigger>
-            <TabsTrigger value="qbr" className="data-[state=active]:bg-indigo-500 data-[state=active]:text-white text-xs">
-              QBR KPIs
-            </TabsTrigger>
             <TabsTrigger value="legacy" className="data-[state=active]:bg-gray-500 data-[state=active]:text-white text-xs">
               Legacy
             </TabsTrigger>
@@ -168,6 +207,38 @@ const Index = () => {
 
           <TabsContent value="live-inventory" className="space-y-4">
             <LiveDAInventoryMap />
+          </TabsContent>
+
+          <TabsContent value="approval-tracker" className="space-y-4">
+            <DAStockSoldTracker userRole={userRole} userId="current_user" />
+          </TabsContent>
+
+          <TabsContent value="accountant-panel" className="space-y-4">
+            {userRole === 'accountant' || userRole === 'admin' ? (
+              <AccountantPaymentPanel />
+            ) : (
+              <Card className="bg-slate-800/50 border-slate-700">
+                <CardContent className="p-8 text-center">
+                  <Shield className="h-12 w-12 text-slate-400 mx-auto mb-4" />
+                  <h3 className="text-white font-medium mb-2">Access Restricted</h3>
+                  <p className="text-slate-400">This panel is only accessible to Accountant role</p>
+                </CardContent>
+              </Card>
+            )}
+          </TabsContent>
+
+          <TabsContent value="telesales-panel" className="space-y-4">
+            {userRole === 'telesales' || userRole === 'admin' ? (
+              <TelesalesConfirmationPanel />
+            ) : (
+              <Card className="bg-slate-800/50 border-slate-700">
+                <CardContent className="p-8 text-center">
+                  <Shield className="h-12 w-12 text-slate-400 mx-auto mb-4" />
+                  <h3 className="text-white font-medium mb-2">Access Restricted</h3>
+                  <p className="text-slate-400">This panel is only accessible to Telesales role</p>
+                </CardContent>
+              </Card>
+            )}
           </TabsContent>
 
           <TabsContent value="da-stock-health" className="space-y-4">
@@ -192,14 +263,6 @@ const Index = () => {
 
           <TabsContent value="alerts" className="space-y-4">
             <AlertsFeed />
-          </TabsContent>
-
-          <TabsContent value="replenishment" className="space-y-4">
-            <ReplenishmentTracker />
-          </TabsContent>
-
-          <TabsContent value="qbr" className="space-y-4">
-            <QBRDashboard />
           </TabsContent>
 
           <TabsContent value="legacy" className="space-y-4">
