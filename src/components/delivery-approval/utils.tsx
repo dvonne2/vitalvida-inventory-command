@@ -1,4 +1,3 @@
-
 import { DeliveryOrder } from './types';
 
 export const canApproveDelivery = (order: DeliveryOrder, userRole: string) => {
@@ -15,16 +14,16 @@ export const canApproveDelivery = (order: DeliveryOrder, userRole: string) => {
 
 export const formatTimeRemaining = (hours: number) => {
   if (hours <= 0) {
-    return <span className="text-red-500 font-bold">⛔ Overdue</span>;
+    return <span className="text-destructive font-bold">⛔ Overdue</span>;
   }
   const h = Math.floor(hours);
   const m = Math.floor((hours - h) * 60);
   if (hours < 2) {
-    return <span className="text-red-400 font-bold">{h}h {m}m left</span>;
+    return <span className="text-destructive font-bold">{h}h {m}m left</span>;
   } else if (hours < 6) {
-    return <span className="text-yellow-400 font-bold">{h}h {m}m left</span>;
+    return <span className="text-warning font-bold">{h}h {m}m left</span>;
   } else {
-    return <span className="text-green-400 font-bold">{h}h {m}m left</span>;
+    return <span className="text-success font-bold">{h}h {m}m left</span>;
   }
 };
 

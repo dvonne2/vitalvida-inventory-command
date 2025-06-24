@@ -8,9 +8,9 @@ interface VerificationIconProps {
 
 const VerificationIcon = ({ verified }: VerificationIconProps) => {
   return verified ? (
-    <CheckCircle className="h-4 w-4 text-green-400" />
+    <CheckCircle className="h-4 w-4 text-success" />
   ) : (
-    <XCircle className="h-4 w-4 text-red-400" />
+    <XCircle className="h-4 w-4 text-destructive" />
   );
 };
 
