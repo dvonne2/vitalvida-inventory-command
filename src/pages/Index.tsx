@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -43,35 +42,35 @@ const Index = () => {
 
   const getRoleColor = (role: UserRole) => {
     switch (role) {
-      case 'inventory_manager': return 'bg-teal/10 text-teal border-teal';
-      case 'accountant': return 'bg-success/10 text-success border-success';
-      case 'telesales': return 'bg-purple-500/10 text-purple-600 border-purple-500';
-      case 'admin': return 'bg-destructive/10 text-destructive border-destructive';
-      default: return 'bg-gray-500/10 text-gray-600 border-gray-500';
+      case 'inventory_manager': return 'bg-blue-500/20 text-blue-400 border-blue-500';
+      case 'accountant': return 'bg-green-500/20 text-green-400 border-green-500';
+      case 'telesales': return 'bg-purple-500/20 text-purple-400 border-purple-500';
+      case 'admin': return 'bg-red-500/20 text-red-400 border-red-500';
+      default: return 'bg-gray-500/20 text-gray-400 border-gray-500';
     }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
       {/* Header */}
-      <div className="bg-white/80 backdrop-blur-sm border-b border-gray-200 p-4 shadow-sm">
+      <div className="bg-slate-800/50 backdrop-blur-sm border-b border-slate-700 p-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">
-              <Package className="h-8 w-8 text-teal" />
+            <h1 className="text-2xl font-bold text-white flex items-center gap-2">
+              <Package className="h-8 w-8 text-blue-400" />
               Vitalvida Inventory + DA Command Center
             </h1>
-            <p className="text-muted-foreground text-sm mt-1">
+            <p className="text-slate-300 text-sm mt-1">
               Inventory Manager & DA Supervisor Portal | Last updated: {lastRefresh.toLocaleTimeString()}
             </p>
           </div>
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2">
-              <UserCheck className="h-4 w-4 text-muted-foreground" />
+              <UserCheck className="h-4 w-4 text-slate-400" />
               <select 
                 value={userRole} 
                 onChange={(e) => handleRoleChange(e.target.value)}
-                className="bg-white border border-gray-300 text-foreground rounded-md px-3 py-1 text-sm focus:ring-2 focus:ring-teal focus:border-teal"
+                className="bg-slate-700 border border-slate-600 text-white rounded-md px-3 py-1 text-sm"
               >
                 <option value="inventory_manager">Inventory Manager</option>
                 <option value="accountant">Accountant</option>
@@ -82,10 +81,10 @@ const Index = () => {
                 {userRole.replace('_', ' ').toUpperCase()}
               </Badge>
             </div>
-            <Badge variant="outline" className="bg-success/10 text-success border-success">
+            <Badge variant="outline" className="bg-green-500/20 text-green-400 border-green-500">
               ● Live SKU Tracking
             </Badge>
-            <Button variant="outline" size="sm" className="text-foreground border-gray-300 hover:bg-gray-50">
+            <Button variant="outline" size="sm" className="text-slate-300 border-slate-600 hover:bg-slate-700">
               Refresh Data
             </Button>
           </div>
@@ -98,62 +97,62 @@ const Index = () => {
 
         {/* Enhanced Quick Stats Overview */}
         <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-          <Card className="bg-white border-gray-200 shadow-sm hover:shadow-md transition-shadow">
+          <Card className="bg-slate-800/50 border-slate-700">
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-muted-foreground text-sm">Critical Alerts</p>
-                  <p className="text-2xl font-bold text-destructive">3</p>
+                  <p className="text-slate-400 text-sm">Critical Alerts</p>
+                  <p className="text-2xl font-bold text-red-400">3</p>
                 </div>
-                <AlertTriangle className="h-8 w-8 text-destructive" />
+                <AlertTriangle className="h-8 w-8 text-red-400" />
               </div>
             </CardContent>
           </Card>
           
-          <Card className="bg-white border-gray-200 shadow-sm hover:shadow-md transition-shadow">
+          <Card className="bg-slate-800/50 border-slate-700">
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-muted-foreground text-sm">Active DAs</p>
-                  <p className="text-2xl font-bold text-teal">12</p>
+                  <p className="text-slate-400 text-sm">Active DAs</p>
+                  <p className="text-2xl font-bold text-blue-400">12</p>
                 </div>
-                <Users className="h-8 w-8 text-teal" />
+                <Users className="h-8 w-8 text-blue-400" />
               </div>
             </CardContent>
           </Card>
 
-          <Card className="bg-white border-gray-200 shadow-sm hover:shadow-md transition-shadow">
+          <Card className="bg-slate-800/50 border-slate-700">
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-muted-foreground text-sm">SKU Accuracy</p>
-                  <p className="text-2xl font-bold text-warning">87%</p>
+                  <p className="text-slate-400 text-sm">SKU Accuracy</p>
+                  <p className="text-2xl font-bold text-yellow-400">87%</p>
                 </div>
-                <Shield className="h-8 w-8 text-warning" />
+                <Shield className="h-8 w-8 text-yellow-400" />
               </div>
             </CardContent>
           </Card>
 
-          <Card className="bg-white border-gray-200 shadow-sm hover:shadow-md transition-shadow">
+          <Card className="bg-slate-800/50 border-slate-700">
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-muted-foreground text-sm">Cash Locked</p>
-                  <p className="text-2xl font-bold text-destructive">₦304k</p>
+                  <p className="text-slate-400 text-sm">Cash Locked</p>
+                  <p className="text-2xl font-bold text-orange-400">₦304k</p>
                 </div>
-                <DollarSign className="h-8 w-8 text-destructive" />
+                <DollarSign className="h-8 w-8 text-orange-400" />
               </div>
             </CardContent>
           </Card>
 
-          <Card className="bg-white border-gray-200 shadow-sm hover:shadow-md transition-shadow">
+          <Card className="bg-slate-800/50 border-slate-700">
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-muted-foreground text-sm">Top Performer</p>
-                  <p className="text-2xl font-bold text-gold">Femi</p>
+                  <p className="text-slate-400 text-sm">Top Performer</p>
+                  <p className="text-2xl font-bold text-green-400">Femi</p>
                 </div>
-                <Trophy className="h-8 w-8 text-gold" />
+                <Trophy className="h-8 w-8 text-green-400" />
               </div>
             </CardContent>
           </Card>
@@ -161,35 +160,35 @@ const Index = () => {
 
         {/* Main Dashboard Tabs */}
         <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-6 md:grid-cols-12 bg-white border border-gray-200 shadow-sm">
-            <TabsTrigger value="overview" className="data-[state=active]:bg-teal data-[state=active]:text-white text-xs">
+          <TabsList className="grid w-full grid-cols-6 md:grid-cols-12 bg-slate-800/50 border border-slate-700">
+            <TabsTrigger value="overview" className="data-[state=active]:bg-indigo-500 data-[state=active]:text-white text-xs">
               Overview
             </TabsTrigger>
-            <TabsTrigger value="live-inventory" className="data-[state=active]:bg-aqua data-[state=active]:text-white text-xs">
+            <TabsTrigger value="live-inventory" className="data-[state=active]:bg-emerald-500 data-[state=active]:text-white text-xs">
               🗺️ Live Map
             </TabsTrigger>
-            <TabsTrigger value="accountant-panel" className="data-[state=active]:bg-success data-[state=active]:text-white text-xs">
+            <TabsTrigger value="accountant-panel" className="data-[state=active]:bg-green-500 data-[state=active]:text-white text-xs">
               💳 Accountant
             </TabsTrigger>
             <TabsTrigger value="telesales-panel" className="data-[state=active]:bg-purple-500 data-[state=active]:text-white text-xs">
               📞 Telesales
             </TabsTrigger>
-            <TabsTrigger value="da-stock-health" className="data-[state=active]:bg-teal data-[state=active]:text-white text-xs">
+            <TabsTrigger value="da-stock-health" className="data-[state=active]:bg-blue-500 data-[state=active]:text-white text-xs">
               DA Stock Health
             </TabsTrigger>
-            <TabsTrigger value="sales-tracker" className="data-[state=active]:bg-success data-[state=active]:text-white text-xs">
+            <TabsTrigger value="sales-tracker" className="data-[state=active]:bg-green-500 data-[state=active]:text-white text-xs">
               Delivery Approval Tracker
             </TabsTrigger>
-            <TabsTrigger value="cash-locked" className="data-[state=active]:bg-warning data-[state=active]:text-white text-xs">
+            <TabsTrigger value="cash-locked" className="data-[state=active]:bg-yellow-500 data-[state=active]:text-white text-xs">
               Cash Locked
             </TabsTrigger>
-            <TabsTrigger value="scorecard" className="data-[state=active]:bg-gold data-[state=active]:text-white text-xs">
+            <TabsTrigger value="scorecard" className="data-[state=active]:bg-purple-500 data-[state=active]:text-white text-xs">
               Scorecard
             </TabsTrigger>
-            <TabsTrigger value="fraud-alerts" className="data-[state=active]:bg-destructive data-[state=active]:text-white text-xs">
+            <TabsTrigger value="fraud-alerts" className="data-[state=active]:bg-red-500 data-[state=active]:text-white text-xs">
               Fraud Alerts
             </TabsTrigger>
-            <TabsTrigger value="alerts" className="data-[state=active]:bg-warning data-[state=active]:text-white text-xs">
+            <TabsTrigger value="alerts" className="data-[state=active]:bg-orange-500 data-[state=active]:text-white text-xs">
               Live Alerts
             </TabsTrigger>
             <TabsTrigger value="legacy" className="data-[state=active]:bg-gray-500 data-[state=active]:text-white text-xs">
@@ -209,11 +208,11 @@ const Index = () => {
             {userRole === 'accountant' || userRole === 'admin' ? (
               <AccountantPaymentPanel />
             ) : (
-              <Card className="bg-white border-gray-200 shadow-sm">
+              <Card className="bg-slate-800/50 border-slate-700">
                 <CardContent className="p-8 text-center">
-                  <Shield className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                  <h3 className="text-foreground font-medium mb-2">Access Restricted</h3>
-                  <p className="text-muted-foreground">This panel is only accessible to Accountant role</p>
+                  <Shield className="h-12 w-12 text-slate-400 mx-auto mb-4" />
+                  <h3 className="text-white font-medium mb-2">Access Restricted</h3>
+                  <p className="text-slate-400">This panel is only accessible to Accountant role</p>
                 </CardContent>
               </Card>
             )}
@@ -223,11 +222,11 @@ const Index = () => {
             {userRole === 'telesales' || userRole === 'admin' ? (
               <TelesalesConfirmationPanel />
             ) : (
-              <Card className="bg-white border-gray-200 shadow-sm">
+              <Card className="bg-slate-800/50 border-slate-700">
                 <CardContent className="p-8 text-center">
-                  <Shield className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                  <h3 className="text-foreground font-medium mb-2">Access Restricted</h3>
-                  <p className="text-muted-foreground">This panel is only accessible to Telesales role</p>
+                  <Shield className="h-12 w-12 text-slate-400 mx-auto mb-4" />
+                  <h3 className="text-white font-medium mb-2">Access Restricted</h3>
+                  <p className="text-slate-400">This panel is only accessible to Telesales role</p>
                 </CardContent>
               </Card>
             )}
@@ -237,6 +236,7 @@ const Index = () => {
             <DAStockHealth />
           </TabsContent>
 
+          {/* Updated "sales-tracker" to hold Delivery Approval Tracker */}
           <TabsContent value="sales-tracker" className="space-y-4">
             <DADeliveryApprovalTracker userRole={userRole} userId="current_user" />
           </TabsContent>
