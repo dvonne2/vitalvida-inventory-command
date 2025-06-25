@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import NigeriaMap from './NigeriaMap';
+import GeoNigeriaMap from './GeoNigeriaMap';
 import StateDetailsCard from './StateDetailsCard';
 import StateSummaryTable from './StateSummaryTable';
 
@@ -48,7 +48,7 @@ const MapTab = ({ stateData, selectedState, setSelectedState }: MapTabProps) => 
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <NigeriaMap 
+            <GeoNigeriaMap 
               stateData={stateData} 
               onStateClick={setSelectedState}
               selectedState={selectedState}
