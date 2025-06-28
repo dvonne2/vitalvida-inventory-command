@@ -1,9 +1,8 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { List, Clock, CheckCircle, XCircle } from 'lucide-react';
+import { List, Clock, CheckCircle, XCircle, FileText } from 'lucide-react';
 
 interface PurchaseOrder {
   id: number;
