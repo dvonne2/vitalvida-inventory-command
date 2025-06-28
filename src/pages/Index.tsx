@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -22,6 +21,7 @@ import GamifiedScorecard from '@/components/GamifiedScorecard';
 import FraudAlertsPanel from '@/components/FraudAlertsPanel';
 import EnhancedDashboardOverview from '@/components/EnhancedDashboardOverview';
 import LiveDAInventoryMap from '@/components/LiveDAInventoryMap';
+import InventoryManagerPortal from '@/components/InventoryManagerPortal';
 
 type UserRole = 'inventory_manager' | 'accountant' | 'telesales' | 'admin';
 
@@ -170,6 +170,13 @@ const Index = () => {
                 Overview
               </TabsTrigger>
               <TabsTrigger 
+                value="im-portal" 
+                className="inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-blue-500 data-[state=active]:text-white data-[state=active]:shadow-sm"
+              >
+                <span className="mr-1">📦</span>
+                IM Portal
+              </TabsTrigger>
+              <TabsTrigger 
                 value="live-inventory" 
                 className="inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-emerald-500 data-[state=active]:text-white data-[state=active]:shadow-sm"
               >
@@ -237,6 +244,10 @@ const Index = () => {
 
           <TabsContent value="overview" className="space-y-4">
             <EnhancedDashboardOverview />
+          </TabsContent>
+
+          <TabsContent value="im-portal" className="space-y-4">
+            <InventoryManagerPortal />
           </TabsContent>
 
           <TabsContent value="live-inventory" className="space-y-4">
