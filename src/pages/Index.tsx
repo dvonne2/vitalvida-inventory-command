@@ -96,6 +96,25 @@ const Index = () => {
         {/* Motivational Cards */}
         <MotivationalCards />
 
+        {/* Quick Navigation */}
+        <Card className="bg-slate-800/50 border-slate-700">
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-white font-semibold text-lg mb-2">Quick Access</h3>
+                <p className="text-slate-400">Navigate to specialized inventory management tools</p>
+              </div>
+              <Button
+                onClick={() => window.location.href = '/inventory-stock-flow'}
+                className="bg-blue-600 hover:bg-blue-700 text-white"
+              >
+                <Package className="mr-2 h-4 w-4" />
+                Inventory Stock Flow
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+
         {/* Enhanced Quick Stats Overview */}
         <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
           <Card className="bg-slate-800/50 border-slate-700">
