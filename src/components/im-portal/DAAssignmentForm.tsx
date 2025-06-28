@@ -13,8 +13,7 @@ const DAAssignmentForm = () => {
   const [formData, setFormData] = useState({
     delivery_agent_id: '',
     product_id: '',
-    cartons: '',
-    units_per_carton: '6' // Default value
+    units_assigned: ''
   });
   const { toast } = useToast();
 
@@ -38,30 +37,41 @@ const DAAssignmentForm = () => {
 
     try {
       const selectedProduct = products.find(p => p.id === formData.product_id);
-      const totalUnits = parseInt(formData.cartons) * parseInt(formData.units_per_carton);
+      const unitsToAssign = parseInt(formData.units_assigned);
       
-      // Check if trying to assign more than available stock
-      if (selectedProduct && totalUnits > selectedProduct.available_stock) {
-        throw new Error('Cannot assign more than available stock.');
+      // Fraud prevention: Check if trying to assign more than available stock
+      if (selectedProduct && unitsToAssign > selectedProduct.available_stock) {
+        throw new Error(`Cannot assign ${unitsToAssign} units. Only ${selectedProduct.available_stock} units available.`);
       }
 
-      // Mock API call - replace with actual API
+      // Fraud prevention: Check for negative or zero values
+      if (unitsToAssign <= 0) {
+        throw new Error('Units to assign must be greater than zero.');
+      }
+
+      // Mock API call - replace with actual endpoint: POST /api/inventory/assign-to-da
+      const apiPayload = {
+        delivery_agent_id: parseInt(formData.delivery_agent_id.replace('DA', '')),
+        product_id: parseInt(formData.product_id),
+        units_assigned: unitsToAssign
+      };
+      
+      console.log('API Payload:', apiPayload);
       await new Promise(resolve => setTimeout(resolve, 1500));
       
       const selectedDA = deliveryAgents.find(da => da.id === formData.delivery_agent_id);
       
       toast({
-        title: "Stock handed over to DA",
-        description: `Successfully assigned ${totalUnits} units to ${selectedDA?.name}.`,
+        title: "Stock assigned successfully",
+        description: `${unitsToAssign} units of ${selectedProduct?.name} assigned to ${selectedDA?.name}.`,
         variant: "default"
       });
 
-      // Reset form
+      // Reset form after successful assignment
       setFormData({
         delivery_agent_id: '',
         product_id: '',
-        cartons: '',
-        units_per_carton: '6'
+        units_assigned: ''
       });
     } catch (error) {
       toast({
@@ -75,8 +85,7 @@ const DAAssignmentForm = () => {
   };
 
   const selectedProduct = products.find(p => p.id === formData.product_id);
-  const totalUnits = formData.cartons && formData.units_per_carton ? 
-    parseInt(formData.cartons) * parseInt(formData.units_per_carton) : 0;
+  const unitsToAssign = formData.units_assigned ? parseInt(formData.units_assigned) : 0;
 
   return (
     <Card className="bg-slate-800/50 border-slate-700">
@@ -87,7 +96,7 @@ const DAAssignmentForm = () => {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-2">
             <Label htmlFor="delivery_agent" className="text-slate-300">Delivery Agent</Label>
             <Select
@@ -129,54 +138,44 @@ const DAAssignmentForm = () => {
           </div>
 
           {selectedProduct && (
-            <div className="p-3 bg-slate-700/30 rounded-lg">
+            <div className="p-4 bg-slate-700/30 rounded-lg border border-slate-600">
               <p className="text-slate-300 text-sm">
-                <strong>Available Stock:</strong> {selectedProduct.available_stock} units
+                <strong>Available Stock:</strong> <span className="text-green-400 font-semibold">{selectedProduct.available_stock} units</span>
               </p>
             </div>
           )}
 
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="cartons" className="text-slate-300">Number of Cartons</Label>
-              <Input
-                id="cartons"
-                type="number"
-                value={formData.cartons}
-                onChange={(e) => setFormData({ ...formData, cartons: e.target.value })}
-                placeholder="Enter cartons"
-                className="bg-slate-700 border-slate-600 text-white"
-                required
-                min="1"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="units_per_carton" className="text-slate-300">Units per Carton</Label>
-              <Input
-                id="units_per_carton"
-                type="number"
-                value={formData.units_per_carton}
-                onChange={(e) => setFormData({ ...formData, units_per_carton: e.target.value })}
-                placeholder="Units per carton"
-                className="bg-slate-700 border-slate-600 text-white"
-                required
-                min="1"
-              />
-            </div>
+          <div className="space-y-2">
+            <Label htmlFor="units_assigned" className="text-slate-300">Units to Assign</Label>
+            <Input
+              id="units_assigned"
+              type="number"
+              value={formData.units_assigned}
+              onChange={(e) => setFormData({ ...formData, units_assigned: e.target.value })}
+              placeholder="Enter number of units"
+              className="bg-slate-700 border-slate-600 text-white"
+              required
+              min="1"
+              max={selectedProduct?.available_stock || undefined}
+            />
           </div>
 
-          {totalUnits > 0 && (
-            <div className="p-3 bg-blue-500/10 border border-blue-500/20 rounded-lg">
+          {unitsToAssign > 0 && selectedProduct && (
+            <div className="p-4 bg-blue-500/10 border border-blue-500/20 rounded-lg">
               <p className="text-blue-400 text-sm">
-                <strong>Total Units to Assign:</strong> {totalUnits} units
+                <strong>Assignment Summary:</strong> {unitsToAssign} units of {selectedProduct.name}
               </p>
+              {unitsToAssign > selectedProduct.available_stock && (
+                <p className="text-red-400 text-sm mt-1">
+                  ⚠️ Exceeds available stock ({selectedProduct.available_stock} units)
+                </p>
+              )}
             </div>
           )}
 
           <Button
             type="submit"
-            disabled={isSubmitting}
+            disabled={isSubmitting || !formData.delivery_agent_id || !formData.product_id || !formData.units_assigned}
             className="w-full bg-orange-600 hover:bg-orange-700 text-white"
           >
             {isSubmitting ? (

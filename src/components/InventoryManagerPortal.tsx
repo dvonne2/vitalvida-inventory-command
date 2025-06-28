@@ -12,6 +12,7 @@ import ReturnsDashboard from './im-portal/ReturnsDashboard';
 import InventoryLogs from './im-portal/InventoryLogs';
 import BinCapacityWidget from './im-portal/BinCapacityWidget';
 import DAInventoryView from './im-portal/DAInventoryView';
+import DAInventoryMonitorGrid from './im-portal/DAInventoryMonitorGrid';
 
 const InventoryManagerPortal = () => {
   const [activeTab, setActiveTab] = useState('overview');
@@ -102,6 +103,9 @@ const InventoryManagerPortal = () => {
             <TabsTrigger value="da-inventory" className="data-[state=active]:bg-cyan-500 data-[state=active]:text-white">
               👥 DA Inventory
             </TabsTrigger>
+            <TabsTrigger value="da-monitor" className="data-[state=active]:bg-purple-500 data-[state=active]:text-white">
+              📋 DA Monitor Grid
+            </TabsTrigger>
             <TabsTrigger value="purchase-orders" className="data-[state=active]:bg-green-500 data-[state=active]:text-white">
               📋 Purchase Orders
             </TabsTrigger>
@@ -161,6 +165,10 @@ const InventoryManagerPortal = () => {
 
         <TabsContent value="da-inventory" className="space-y-4">
           <DAInventoryView />
+        </TabsContent>
+
+        <TabsContent value="da-monitor" className="space-y-4">
+          <DAInventoryMonitorGrid />
         </TabsContent>
 
         <TabsContent value="purchase-orders" className="space-y-4">
