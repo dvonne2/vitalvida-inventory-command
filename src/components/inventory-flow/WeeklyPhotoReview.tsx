@@ -3,10 +3,9 @@ import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Eye, CheckCircle, XCircle, Bell, MessageSquare, Calendar } from 'lucide-react';
+import { Eye, CheckCircle, XCircle, Bell, Calendar } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface PhotoSubmission {
@@ -193,7 +192,7 @@ const WeeklyPhotoReview = () => {
         <CardHeader>
           <CardTitle className="text-white flex items-center gap-3">
             <Calendar className="h-6 w-6 text-purple-400" />
-            Weekly Photo Review Dashboard
+            Weekly Photo Verification Dashboard
             <Badge className="ml-auto bg-purple-500/20 text-purple-400 border-purple-500">
               {photoSubmissions.filter(p => p.status === 'pending').length} Pending Reviews
             </Badge>
@@ -235,7 +234,7 @@ const WeeklyPhotoReview = () => {
       {/* Photo Submissions Table */}
       <Card className="bg-slate-800/50 border-slate-700">
         <CardHeader>
-          <CardTitle className="text-white">Submitted Photos</CardTitle>
+          <CardTitle className="text-white">Photo Submissions for Review</CardTitle>
         </CardHeader>
         <CardContent>
           <Table>
@@ -311,7 +310,7 @@ const WeeklyPhotoReview = () => {
         <Card className="bg-slate-800/50 border-slate-700">
           <CardHeader>
             <CardTitle className="text-white flex items-center justify-between">
-              Photo Review - {selectedPhoto.agent_name}
+              Photo Verification - {selectedPhoto.agent_name}
               <Button
                 variant="outline"
                 size="sm"
@@ -347,7 +346,7 @@ const WeeklyPhotoReview = () => {
                 {selectedPhoto.status === 'pending' && (
                   <div className="space-y-4">
                     <div className="space-y-2">
-                      <label className="text-slate-300 text-sm">Rejection Reason (if applicable)</label>
+                      <label className="text-slate-300 text-sm">Rejection Reason (if flagging photo)</label>
                       <Textarea
                         value={rejectionComment}
                         onChange={(e) => setRejectionComment(e.target.value)}
@@ -364,7 +363,7 @@ const WeeklyPhotoReview = () => {
                         className="bg-green-600 hover:bg-green-700 text-white flex-1"
                       >
                         <CheckCircle className="h-4 w-4 mr-2" />
-                        Approve Photo
+                        ✅ Approve Photo
                       </Button>
                       <Button
                         onClick={() => handleReject(selectedPhoto.id)}
@@ -372,7 +371,7 @@ const WeeklyPhotoReview = () => {
                         className="bg-red-600 hover:bg-red-700 text-white flex-1"
                       >
                         <XCircle className="h-4 w-4 mr-2" />
-                        Need Better Photo
+                        ❌ Needs Better Photo
                       </Button>
                     </div>
                   </div>
