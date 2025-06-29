@@ -3,13 +3,15 @@ import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Package, TruckIcon, ArrowRightLeft, FileText, Plus, Download } from 'lucide-react';
+import { Package, TruckIcon, ArrowRightLeft, FileText, Plus, Download, Camera, Eye } from 'lucide-react';
 import ReceiveStockSection from '@/components/inventory-flow/ReceiveStockSection';
 import AssignToDASection from '@/components/inventory-flow/AssignToDASection';
 import DAReturnsTab from '@/components/inventory-flow/DAReturnsTab';
 import TransferBetweenDAsTab from '@/components/inventory-flow/TransferBetweenDAsTab';
 import ReturnToFactoryTab from '@/components/inventory-flow/ReturnToFactoryTab';
 import TransactionLogTab from '@/components/inventory-flow/TransactionLogTab';
+import AgentPhotoUploadForm from '@/components/inventory-flow/AgentPhotoUploadForm';
+import WeeklyPhotoReview from '@/components/inventory-flow/WeeklyPhotoReview';
 
 const InventoryStockFlow = () => {
   const [stockCounts, setStockCounts] = useState({
@@ -104,7 +106,45 @@ const InventoryStockFlow = () => {
         {/* Section 2: Assign to Delivery Agent */}
         <AssignToDASection onStockUpdate={setStockCounts} />
 
-        {/* Section 3: Returns, Transfers, Logs */}
+        {/* Section 3: Weekly Photo Upload & Review */}
+        <Card className="bg-slate-800/50 border-slate-700">
+          <CardHeader>
+            <CardTitle className="text-white flex items-center gap-3">
+              <Camera className="h-6 w-6 text-purple-400" />
+              Weekly Photo Verification
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="p-6">
+            <Tabs defaultValue="agent-upload" className="space-y-6">
+              <TabsList className="grid w-full grid-cols-2 bg-slate-700/50">
+                <TabsTrigger 
+                  value="agent-upload" 
+                  className="data-[state=active]:bg-purple-500 data-[state=active]:text-white"
+                >
+                  <Camera className="h-4 w-4 mr-2" />
+                  Agent Upload
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="manager-review" 
+                  className="data-[state=active]:bg-indigo-500 data-[state=active]:text-white"
+                >
+                  <Eye className="h-4 w-4 mr-2" />
+                  Manager Review
+                </TabsTrigger>
+              </TabsList>
+
+              <TabsContent value="agent-upload">
+                <AgentPhotoUploadForm />
+              </TabsContent>
+
+              <TabsContent value="manager-review">
+                <WeeklyPhotoReview />
+              </TabsContent>
+            </Tabs>
+          </CardContent>
+        </Card>
+
+        {/* Section 4: Returns, Transfers, Logs */}
         <Card className="bg-slate-800/50 border-slate-700">
           <CardHeader>
             <CardTitle className="text-white flex items-center gap-3">
