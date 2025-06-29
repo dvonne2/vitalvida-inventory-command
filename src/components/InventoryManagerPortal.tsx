@@ -1,9 +1,8 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Package, FileText, Truck, Users, ArrowLeftRight, RotateCcw, Factory } from 'lucide-react';
+import { Package, FileText, Truck, Users, ArrowLeftRight, RotateCcw, Factory, AlertTriangle } from 'lucide-react';
 import PurchaseOrderForm from './im-portal/PurchaseOrderForm';
 import PurchaseOrdersList from './im-portal/PurchaseOrdersList';
 import GoodsReceiptForm from './im-portal/GoodsReceiptForm';
@@ -13,6 +12,7 @@ import InventoryLogs from './im-portal/InventoryLogs';
 import BinCapacityWidget from './im-portal/BinCapacityWidget';
 import DAInventoryView from './im-portal/DAInventoryView';
 import DAInventoryMonitorGrid from './im-portal/DAInventoryMonitorGrid';
+import DamagedProductTracker from './DamagedProductTracker';
 
 const InventoryManagerPortal = () => {
   const [activeTab, setActiveTab] = useState('overview');
@@ -84,10 +84,10 @@ const InventoryManagerPortal = () => {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-slate-400 text-sm">Bin Capacity</p>
-                <p className="text-2xl font-bold text-green-400">67%</p>
+                <p className="text-slate-400 text-sm">Damaged Reports</p>
+                <p className="text-2xl font-bold text-red-400">4</p>
               </div>
-              <Package className="h-8 w-8 text-green-400" />
+              <AlertTriangle className="h-8 w-8 text-red-400" />
             </div>
           </CardContent>
         </Card>
@@ -105,6 +105,9 @@ const InventoryManagerPortal = () => {
             </TabsTrigger>
             <TabsTrigger value="da-monitor" className="data-[state=active]:bg-purple-500 data-[state=active]:text-white">
               📋 DA Monitor Grid
+            </TabsTrigger>
+            <TabsTrigger value="damaged-stock" className="data-[state=active]:bg-red-500 data-[state=active]:text-white">
+              ⚠️ Damaged Stock
             </TabsTrigger>
             <TabsTrigger value="purchase-orders" className="data-[state=active]:bg-green-500 data-[state=active]:text-white">
               📋 Purchase Orders
@@ -169,6 +172,10 @@ const InventoryManagerPortal = () => {
 
         <TabsContent value="da-monitor" className="space-y-4">
           <DAInventoryMonitorGrid />
+        </TabsContent>
+
+        <TabsContent value="damaged-stock" className="space-y-4">
+          <DamagedProductTracker />
         </TabsContent>
 
         <TabsContent value="purchase-orders" className="space-y-4">
