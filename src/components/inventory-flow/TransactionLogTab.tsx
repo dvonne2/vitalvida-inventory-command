@@ -27,13 +27,13 @@ interface Transaction {
 
 const TransactionLogTab = () => {
   const [filters, setFilters] = useState({
-    da_filter: '',
-    product_filter: '',
+    da_filter: 'all',
+    product_filter: 'all',
     date_from: '',
     date_to: '',
-    movement_type: '',
+    movement_type: 'all',
     search_term: '',
-    status_filter: ''
+    status_filter: 'all'
   });
   
   const [sortConfig, setSortConfig] = useState<{ key: keyof Transaction; direction: 'asc' | 'desc' }>({ 
@@ -197,17 +197,17 @@ const TransactionLogTab = () => {
         transaction.to.toLowerCase().includes(filters.search_term.toLowerCase()) ||
         transaction.reference_number.toLowerCase().includes(filters.search_term.toLowerCase());
 
-      const matchesDA = !filters.da_filter || 
+      const matchesDA = filters.da_filter === 'all' || 
         transaction.from === filters.da_filter || 
         transaction.to === filters.da_filter;
 
-      const matchesProduct = !filters.product_filter || 
+      const matchesProduct = filters.product_filter === 'all' || 
         transaction.product === filters.product_filter;
 
-      const matchesType = !filters.movement_type || 
+      const matchesType = filters.movement_type === 'all' || 
         transaction.type === filters.movement_type;
 
-      const matchesStatus = !filters.status_filter || 
+      const matchesStatus = filters.status_filter === 'all' || 
         transaction.status === filters.status_filter;
 
       const matchesDateFrom = !filters.date_from || 
@@ -304,13 +304,13 @@ const TransactionLogTab = () => {
 
   const clearFilters = () => {
     setFilters({
-      da_filter: '',
-      product_filter: '',
+      da_filter: 'all',
+      product_filter: 'all',
       date_from: '',
       date_to: '',
-      movement_type: '',
+      movement_type: 'all',
       search_term: '',
-      status_filter: ''
+      status_filter: 'all'
     });
     setCurrentPage(1);
   };
@@ -406,7 +406,7 @@ const TransactionLogTab = () => {
               <SelectValue placeholder="All DAs" />
             </SelectTrigger>
             <SelectContent className="bg-slate-700 border-slate-600 z-50">
-              <SelectItem value="" className="text-white">All DAs</SelectItem>
+              <SelectItem value="all" className="text-white">All DAs</SelectItem>
               {deliveryAgents.map(da => (
                 <SelectItem key={da} value={da} className="text-white">
                   {da}
@@ -426,7 +426,7 @@ const TransactionLogTab = () => {
               <SelectValue placeholder="All Products" />
             </SelectTrigger>
             <SelectContent className="bg-slate-700 border-slate-600 z-50">
-              <SelectItem value="" className="text-white">All Products</SelectItem>
+              <SelectItem value="all" className="text-white">All Products</SelectItem>
               {products.map(product => (
                 <SelectItem key={product} value={product} className="text-white">
                   {product}
@@ -446,7 +446,7 @@ const TransactionLogTab = () => {
               <SelectValue placeholder="All Types" />
             </SelectTrigger>
             <SelectContent className="bg-slate-700 border-slate-600 z-50">
-              <SelectItem value="" className="text-white">All Types</SelectItem>
+              <SelectItem value="all" className="text-white">All Types</SelectItem>
               {movementTypes.map(type => (
                 <SelectItem key={type} value={type} className="text-white">
                   {type}
@@ -466,7 +466,7 @@ const TransactionLogTab = () => {
               <SelectValue placeholder="All Status" />
             </SelectTrigger>
             <SelectContent className="bg-slate-700 border-slate-600 z-50">
-              <SelectItem value="" className="text-white">All Status</SelectItem>
+              <SelectItem value="all" className="text-white">All Status</SelectItem>
               {statusOptions.map(status => (
                 <SelectItem key={status} value={status} className="text-white">
                   {status}
