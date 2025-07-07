@@ -67,7 +67,7 @@ const OTPVerification: React.FC<OTPVerificationProps> = ({
       setOtpRequests(prev => 
         prev.map(request => {
           if (request.status === 'pending' && new Date() > request.expiresAt) {
-            return { ...request, status: 'expired' as const };
+            return { ...request, status: 'expired' };
           }
           return request;
         })
@@ -142,7 +142,7 @@ const OTPVerification: React.FC<OTPVerificationProps> = ({
       setOtpRequests(prev => 
         prev.map(r => 
           r.id === selectedRequestId 
-            ? { ...r, status: 'expired' as const }
+            ? { ...r, status: 'expired' }
             : r
         )
       );
@@ -161,7 +161,7 @@ const OTPVerification: React.FC<OTPVerificationProps> = ({
       setOtpRequests(prev => 
         prev.map(r => 
           r.id === selectedRequestId 
-            ? { ...r, status: 'verified' as const, attempts: newAttempts }
+            ? { ...r, status: 'verified', attempts: newAttempts }
             : r
         )
       );
@@ -181,7 +181,7 @@ const OTPVerification: React.FC<OTPVerificationProps> = ({
       setOtpRequests(prev => 
         prev.map(r => 
           r.id === selectedRequestId 
-            ? { ...r, status: newStatus as const, attempts: newAttempts }
+            ? { ...r, status: newStatus, attempts: newAttempts }
             : r
         )
       );
@@ -206,7 +206,7 @@ const OTPVerification: React.FC<OTPVerificationProps> = ({
           ? { 
               ...r, 
               otpCode: newOtpCode,
-              status: 'pending' as const,
+              status: 'pending',
               expiresAt: new Date(Date.now() + 300000),
               attempts: 0
             }
