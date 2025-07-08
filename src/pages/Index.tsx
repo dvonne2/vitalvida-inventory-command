@@ -25,6 +25,7 @@ import InventoryManagerPortal from '@/components/InventoryManagerPortal';
 import TotalProductStockOverview from '@/components/TotalProductStockOverview';
 import WeeklyPhotoReview from '@/components/inventory-flow/WeeklyPhotoReview';
 import DeliveryVerificationPanel from '@/components/delivery-verification/DeliveryVerificationPanel';
+import InventoryManagerEnforcementDashboard from '@/components/InventoryManagerEnforcementDashboard';
 
 type UserRole = 'inventory_manager' | 'accountant' | 'telesales' | 'admin';
 
@@ -192,6 +193,13 @@ const Index = () => {
                 Overview
               </TabsTrigger>
               <TabsTrigger 
+                value="enforcement-dashboard" 
+                className="inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-red-500 data-[state=active]:text-white data-[state=active]:shadow-sm"
+              >
+                <span className="mr-1">⚠️</span>
+                Enforcement Dashboard
+              </TabsTrigger>
+              <TabsTrigger 
                 value="delivery-verification" 
                 className="inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-emerald-500 data-[state=active]:text-white data-[state=active]:shadow-sm"
               >
@@ -289,6 +297,10 @@ const Index = () => {
             <EnhancedDashboardOverview />
           </TabsContent>
 
+          <TabsContent value="enforcement-dashboard" className="space-y-4">
+            <InventoryManagerEnforcementDashboard />
+          </TabsContent>
+
           <TabsContent value="delivery-verification" className="space-y-4">
             <DeliveryVerificationPanel />
           </TabsContent>
@@ -341,7 +353,6 @@ const Index = () => {
             <DAStockHealth />
           </TabsContent>
 
-          {/* Updated "sales-tracker" to hold Delivery Approval Tracker */}
           <TabsContent value="sales-tracker" className="space-y-4">
             <DADeliveryApprovalTracker userRole={userRole} userId="current_user" />
           </TabsContent>
