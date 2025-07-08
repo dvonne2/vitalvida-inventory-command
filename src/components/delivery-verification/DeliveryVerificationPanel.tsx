@@ -1,8 +1,9 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Shield, Package, CheckCircle, Clock, DollarSign, Phone, CreditCard } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Shield, Package, CheckCircle, Clock, DollarSign, Phone, CreditCard, Eye } from 'lucide-react';
+import OrderDrawer from './OrderDrawer';
 
 interface OrderItem {
   id: string;
@@ -20,6 +21,7 @@ interface DetailedOrder {
   items: OrderItem[];
   totalAmount: number;
   amountPaid: number;
+  discount?: number;
   paymentStatus: 'pending' | 'confirmed' | 'failed';
   otpStatus: 'pending' | 'verified' | 'expired';
   deliveryStatus: 'processing' | 'delivered' | 'completed';
@@ -27,9 +29,15 @@ interface DetailedOrder {
   deliveryDate?: Date;
   paymentMethod: string;
   moniepointRef?: string;
+  paymentConfirmationTime?: Date;
+  deliveryConfirmationTime?: Date;
+  dispatchTime?: Date;
 }
 
 const DeliveryVerificationPanel = () => {
+  const [selectedOrder, setSelectedOrder] = useState<DetailedOrder | null>(null);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
   const [orders] = useState<DetailedOrder[]>([
     {
       orderNo: 'ORD-2024-001',
@@ -43,13 +51,17 @@ const DeliveryVerificationPanel = () => {
       ],
       totalAmount: 21500,
       amountPaid: 21500,
+      discount: 0,
       paymentStatus: 'confirmed',
       otpStatus: 'verified',
       deliveryStatus: 'completed',
       orderDate: new Date('2024-01-15'),
       deliveryDate: new Date('2024-01-17'),
       paymentMethod: 'Bank Transfer',
-      moniepointRef: 'MP-240117-001'
+      moniepointRef: 'MP-240117-001',
+      paymentConfirmationTime: new Date('2024-01-16T10:30:00'),
+      deliveryConfirmationTime: new Date('2024-01-17T14:45:00'),
+      dispatchTime: new Date('2024-01-16T11:00:00')
     },
     {
       orderNo: 'ORD-2024-002',
@@ -62,12 +74,15 @@ const DeliveryVerificationPanel = () => {
       ],
       totalAmount: 18000,
       amountPaid: 16800,
+      discount: 0,
       paymentStatus: 'confirmed',
       otpStatus: 'pending',
       deliveryStatus: 'processing',
       orderDate: new Date('2024-01-16'),
       paymentMethod: 'USSD',
-      moniepointRef: 'MP-240117-002'
+      moniepointRef: 'MP-240117-002',
+      paymentConfirmationTime: new Date('2024-01-16T15:20:00'),
+      dispatchTime: new Date('2024-01-16T16:00:00')
     },
     {
       orderNo: 'ORD-2024-003',
@@ -80,6 +95,7 @@ const DeliveryVerificationPanel = () => {
       ],
       totalAmount: 35000,
       amountPaid: 0,
+      discount: 1500,
       paymentStatus: 'pending',
       otpStatus: 'pending',
       deliveryStatus: 'processing',
@@ -87,6 +103,11 @@ const DeliveryVerificationPanel = () => {
       paymentMethod: 'Card Payment'
     }
   ]);
+
+  const handleViewOrder = (order: DetailedOrder) => {
+    setSelectedOrder(order);
+    setIsDrawerOpen(true);
+  };
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -196,6 +217,14 @@ const DeliveryVerificationPanel = () => {
                   <Badge className={getStatusColor(order.deliveryStatus)}>
                     {order.deliveryStatus.toUpperCase()}
                   </Badge>
+                  <Button
+                    size="sm"
+                    onClick={() => handleViewOrder(order)}
+                    className="bg-blue-600 hover:bg-blue-700 text-white"
+                  >
+                    <Eye className="h-4 w-4 mr-2" />
+                    View Details
+                  </Button>
                 </div>
               </div>
             </CardHeader>
@@ -236,47 +265,20 @@ const DeliveryVerificationPanel = () => {
                 </div>
               </div>
 
-              {/* Order Items Details */}
-              <div className="bg-slate-700/30 rounded-lg p-4">
-                <h4 className="text-white font-medium mb-3">Order Items</h4>
-                <div className="space-y-2">
-                  {order.items.map((item) => (
-                    <div key={item.id} className="flex items-center justify-between p-2 bg-slate-600/30 rounded">
-                      <div>
-                        <p className="text-white font-medium">{item.name}</p>
-                        <p className="text-slate-400 text-sm">
-                          ₦{item.unitPrice.toLocaleString()} per unit
-                        </p>
-                      </div>
-                      <div className="text-right">
-                        <p className="text-white">
-                          {item.quantityDelivered}/{item.quantityOrdered} units
-                        </p>
-                        <p className="text-slate-400 text-sm">
-                          ₦{(item.quantityDelivered * item.unitPrice).toLocaleString()}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Financial Summary */}
+              {/* Quick Order Summary */}
               <div className="bg-slate-700/30 rounded-lg p-4">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div>
-                    <p className="text-slate-400 text-sm">Total Order Value</p>
-                    <p className="text-white font-bold text-lg">₦{order.totalAmount.toLocaleString()}</p>
+                    <p className="text-slate-400 text-sm">Items</p>
+                    <p className="text-white font-medium">{order.items.length} products</p>
+                  </div>
+                  <div>
+                    <p className="text-slate-400 text-sm">Total Value</p>
+                    <p className="text-white font-medium">₦{order.totalAmount.toLocaleString()}</p>
                   </div>
                   <div>
                     <p className="text-slate-400 text-sm">Amount Paid</p>
-                    <p className="text-green-400 font-bold text-lg">₦{order.amountPaid.toLocaleString()}</p>
-                  </div>
-                  <div>
-                    <p className="text-slate-400 text-sm">Outstanding</p>
-                    <p className={`font-bold text-lg ${order.totalAmount - order.amountPaid > 0 ? 'text-red-400' : 'text-green-400'}`}>
-                      ₦{(order.totalAmount - order.amountPaid).toLocaleString()}
-                    </p>
+                    <p className="text-green-400 font-medium">₦{order.amountPaid.toLocaleString()}</p>
                   </div>
                 </div>
               </div>
@@ -284,6 +286,13 @@ const DeliveryVerificationPanel = () => {
           </Card>
         ))}
       </div>
+
+      {/* Order Drawer */}
+      <OrderDrawer 
+        order={selectedOrder}
+        isOpen={isDrawerOpen}
+        onClose={() => setIsDrawerOpen(false)}
+      />
 
       <div className="text-xs text-slate-400 mt-4">
         API: Automated Laravel validation • Real-time status updates via webhooks
