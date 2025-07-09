@@ -18,6 +18,7 @@ import AutomatedReplenishmentSystem from './im-portal/AutomatedReplenishmentSyst
 import RealTimeInventoryDashboard from './im-portal/RealTimeInventoryDashboard';
 import LogisticsOptimization from './im-portal/LogisticsOptimization';
 import ContinuousImprovementSystem from './im-portal/ContinuousImprovementSystem';
+import OperationsHub from './im-portal/operational-panels/OperationsHub';
 
 const InventoryManagerPortal = () => {
   const [activeTab, setActiveTab] = useState('overview');
@@ -134,6 +135,9 @@ const InventoryManagerPortal = () => {
             </TabsTrigger>
             <TabsTrigger value="continuous-improvement" className="data-[state=active]:bg-emerald-500 data-[state=active]:text-white">
               📈 Continuous Improvement
+            </TabsTrigger>
+            <TabsTrigger value="operations-hub" className="data-[state=active]:bg-red-500 data-[state=active]:text-white">
+              🎯 Operations Hub
             </TabsTrigger>
             <TabsTrigger value="da-inventory" className="data-[state=active]:bg-cyan-500 data-[state=active]:text-white">
               👥 DA Inventory
@@ -254,6 +258,10 @@ const InventoryManagerPortal = () => {
 
         <TabsContent value="inventory-logs" className="space-y-4">
           <InventoryLogs />
+        </TabsContent>
+
+        <TabsContent value="operations-hub" className="space-y-4">
+          <OperationsHub />
         </TabsContent>
       </Tabs>
     </div>
