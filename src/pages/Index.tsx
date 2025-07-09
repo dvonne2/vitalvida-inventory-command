@@ -26,13 +26,10 @@ import TotalProductStockOverview from '@/components/TotalProductStockOverview';
 import WeeklyPhotoReview from '@/components/inventory-flow/WeeklyPhotoReview';
 import DeliveryVerificationPanel from '@/components/delivery-verification/DeliveryVerificationPanel';
 import InventoryManagerEnforcementDashboard from '@/components/InventoryManagerEnforcementDashboard';
-
 type UserRole = 'inventory_manager' | 'accountant' | 'telesales' | 'admin';
-
 const Index = () => {
   const [lastRefresh, setLastRefresh] = useState(new Date());
   const [userRole, setUserRole] = useState<UserRole>('inventory_manager');
-
   useEffect(() => {
     const interval = setInterval(() => {
       setLastRefresh(new Date());
@@ -40,23 +37,24 @@ const Index = () => {
 
     return () => clearInterval(interval);
   }, []);
-
   const handleRoleChange = (role: string) => {
     setUserRole(role as UserRole);
   };
-
   const getRoleColor = (role: UserRole) => {
     switch (role) {
-      case 'inventory_manager': return 'bg-blue-500/20 text-blue-400 border-blue-500';
-      case 'accountant': return 'bg-green-500/20 text-green-400 border-green-500';
-      case 'telesales': return 'bg-purple-500/20 text-purple-400 border-purple-500';
-      case 'admin': return 'bg-red-500/20 text-red-400 border-red-500';
-      default: return 'bg-gray-500/20 text-gray-400 border-gray-500';
+      case 'inventory_manager':
+        return 'bg-blue-500/20 text-blue-400 border-blue-500';
+      case 'accountant':
+        return 'bg-green-500/20 text-green-400 border-green-500';
+      case 'telesales':
+        return 'bg-purple-500/20 text-purple-400 border-purple-500';
+      case 'admin':
+        return 'bg-red-500/20 text-red-400 border-red-500';
+      default:
+        return 'bg-gray-500/20 text-gray-400 border-gray-500';
     }
   };
-
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+  return <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
       {/* Header */}
       <div className="bg-slate-800/50 backdrop-blur-sm border-b border-slate-700 p-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
@@ -72,11 +70,7 @@ const Index = () => {
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2">
               <UserCheck className="h-4 w-4 text-slate-400" />
-              <select 
-                value={userRole} 
-                onChange={(e) => handleRoleChange(e.target.value)}
-                className="bg-slate-700 border border-slate-600 text-white rounded-md px-3 py-1 text-sm"
-              >
+              <select value={userRole} onChange={e => handleRoleChange(e.target.value)} className="bg-slate-700 border border-slate-600 text-white rounded-md px-3 py-1 text-sm">
                 <option value="inventory_manager">Inventory Manager</option>
                 <option value="accountant">Accountant</option>
                 <option value="telesales">Telesales</option>
@@ -108,10 +102,7 @@ const Index = () => {
                 <h3 className="text-white font-semibold text-lg mb-2">Quick Access</h3>
                 <p className="text-slate-400">Navigate to specialized inventory management tools</p>
               </div>
-              <Button
-                onClick={() => window.location.href = '/inventory-stock-flow'}
-                className="bg-blue-600 hover:bg-blue-700 text-white"
-              >
+              <Button onClick={() => window.location.href = '/inventory-stock-flow'} className="bg-blue-600 hover:bg-blue-700 text-white">
                 <Package className="mr-2 h-4 w-4" />
                 Inventory Stock Flow
               </Button>
@@ -186,108 +177,60 @@ const Index = () => {
         <Tabs defaultValue="overview" className="space-y-6">
           <div className="w-full overflow-x-auto">
             <TabsList className="inline-flex h-10 items-center justify-start rounded-md bg-slate-800/50 border border-slate-700 p-1 text-muted-foreground min-w-max">
-              <TabsTrigger 
-                value="overview" 
-                className="inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-indigo-500 data-[state=active]:text-white data-[state=active]:shadow-sm"
-              >
+              <TabsTrigger value="overview" className="inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-indigo-500 data-[state=active]:text-white data-[state=active]:shadow-sm">
                 Overview
               </TabsTrigger>
-              <TabsTrigger 
-                value="enforcement-dashboard" 
-                className="inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-red-500 data-[state=active]:text-white data-[state=active]:shadow-sm"
-              >
+              <TabsTrigger value="enforcement-dashboard" className="inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-red-500 data-[state=active]:text-white data-[state=active]:shadow-sm">
                 <span className="mr-1">⚠️</span>
                 Enforcement Dashboard
               </TabsTrigger>
-              <TabsTrigger 
-                value="delivery-verification" 
-                className="inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-emerald-500 data-[state=active]:text-white data-[state=active]:shadow-sm"
-              >
+              <TabsTrigger value="delivery-verification" className="inline-flex items-center justify-center whitespace-nowrap px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-emerald-500 data-[state=active]:text-white data-[state=active]:shadow-sm rounded">
                 <span className="mr-1">💳</span>
                 Payment & OTP
               </TabsTrigger>
-              <TabsTrigger 
-                value="stock-overview" 
-                className="inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-cyan-500 data-[state=active]:text-white data-[state=active]:shadow-sm"
-              >
+              <TabsTrigger value="stock-overview" className="inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-cyan-500 data-[state=active]:text-white data-[state=active]:shadow-sm">
                 <span className="mr-1">📊</span>
                 Stock Overview
               </TabsTrigger>
-              <TabsTrigger 
-                value="photo-verification" 
-                className="inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-purple-500 data-[state=active]:text-white data-[state=active]:shadow-sm"
-              >
+              <TabsTrigger value="photo-verification" className="inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-purple-500 data-[state=active]:text-white data-[state=active]:shadow-sm">
                 <span className="mr-1">📷</span>
                 Photo Verification
               </TabsTrigger>
-              <TabsTrigger 
-                value="im-portal" 
-                className="inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-blue-500 data-[state=active]:text-white data-[state=active]:shadow-sm"
-              >
+              <TabsTrigger value="im-portal" className="inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-blue-500 data-[state=active]:text-white data-[state=active]:shadow-sm">
                 <span className="mr-1">📦</span>
                 IM Portal
               </TabsTrigger>
-              <TabsTrigger 
-                value="live-inventory" 
-                className="inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-emerald-500 data-[state=active]:text-white data-[state=active]:shadow-sm"
-              >
+              <TabsTrigger value="live-inventory" className="inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-emerald-500 data-[state=active]:text-white data-[state=active]:shadow-sm">
                 <span className="mr-1">🗺️</span>
                 Live Map
               </TabsTrigger>
-              <TabsTrigger 
-                value="accountant-panel" 
-                className="inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-green-500 data-[state=active]:text-white data-[state=active]:shadow-sm"
-              >
+              <TabsTrigger value="accountant-panel" className="inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-green-500 data-[state=active]:text-white data-[state=active]:shadow-sm">
                 <span className="mr-1">💳</span>
                 Accountant
               </TabsTrigger>
-              <TabsTrigger 
-                value="telesales-panel" 
-                className="inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-purple-500 data-[state=active]:text-white data-[state=active]:shadow-sm"
-              >
+              <TabsTrigger value="telesales-panel" className="inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-purple-500 data-[state=active]:text-white data-[state=active]:shadow-sm">
                 <span className="mr-1">📞</span>
                 Telesales
               </TabsTrigger>
-              <TabsTrigger 
-                value="da-stock-health" 
-                className="inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-blue-500 data-[state=active]:text-white data-[state=active]:shadow-sm"
-              >
+              <TabsTrigger value="da-stock-health" className="inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-blue-500 data-[state=active]:text-white data-[state=active]:shadow-sm">
                 DA Stock
               </TabsTrigger>
-              <TabsTrigger 
-                value="sales-tracker" 
-                className="inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-green-500 data-[state=active]:text-white data-[state=active]:shadow-sm"
-              >
+              <TabsTrigger value="sales-tracker" className="inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-green-500 data-[state=active]:text-white data-[state=active]:shadow-sm">
                 Delivery Tracker
               </TabsTrigger>
-              <TabsTrigger 
-                value="cash-locked" 
-                className="inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-yellow-500 data-[state=active]:text-white data-[state=active]:shadow-sm"
-              >
+              <TabsTrigger value="cash-locked" className="inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-yellow-500 data-[state=active]:text-white data-[state=active]:shadow-sm">
                 Cash Locked
               </TabsTrigger>
-              <TabsTrigger 
-                value="scorecard" 
-                className="inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-purple-500 data-[state=active]:text-white data-[state=active]:shadow-sm"
-              >
+              <TabsTrigger value="scorecard" className="inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-purple-500 data-[state=active]:text-white data-[state=active]:shadow-sm">
                 Scorecard
               </TabsTrigger>
-              <TabsTrigger 
-                value="fraud-alerts" 
-                className="inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-red-500 data-[state=active]:text-white data-[state=active]:shadow-sm"
-              >
+              <TabsTrigger value="fraud-alerts" className="inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-red-500 data-[state=active]:text-white data-[state=active]:shadow-sm">
                 Fraud Alerts
               </TabsTrigger>
-              <TabsTrigger 
-                value="alerts" 
-                className="inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-orange-500 data-[state=active]:text-white data-[state=active]:shadow-sm"
-              >
+              <TabsTrigger value="alerts" className="inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-orange-500 data-[state=active]:text-white data-[state=active]:shadow-sm">
                 Live Alerts
               </TabsTrigger>
-              <TabsTrigger 
-                value="legacy" 
-                className="inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-gray-500 data-[state=active]:text-white data-[state=active]:shadow-sm"
-              >
+              <TabsTrigger value="legacy" className="inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-gray-500 data-[state=active]:text-white data-[state=active]:shadow-sm">
                 Legacy
               </TabsTrigger>
             </TabsList>
@@ -322,31 +265,23 @@ const Index = () => {
           </TabsContent>
 
           <TabsContent value="accountant-panel" className="space-y-4">
-            {userRole === 'accountant' || userRole === 'admin' ? (
-              <AccountantPaymentPanel />
-            ) : (
-              <Card className="bg-slate-800/50 border-slate-700">
+            {userRole === 'accountant' || userRole === 'admin' ? <AccountantPaymentPanel /> : <Card className="bg-slate-800/50 border-slate-700">
                 <CardContent className="p-8 text-center">
                   <Shield className="h-12 w-12 text-slate-400 mx-auto mb-4" />
                   <h3 className="text-white font-medium mb-2">Access Restricted</h3>
                   <p className="text-slate-400">This panel is only accessible to Accountant role</p>
                 </CardContent>
-              </Card>
-            )}
+              </Card>}
           </TabsContent>
 
           <TabsContent value="telesales-panel" className="space-y-4">
-            {userRole === 'telesales' || userRole === 'admin' ? (
-              <TelesalesConfirmationPanel />
-            ) : (
-              <Card className="bg-slate-800/50 border-slate-700">
+            {userRole === 'telesales' || userRole === 'admin' ? <TelesalesConfirmationPanel /> : <Card className="bg-slate-800/50 border-slate-700">
                 <CardContent className="p-8 text-center">
                   <Shield className="h-12 w-12 text-slate-400 mx-auto mb-4" />
                   <h3 className="text-white font-medium mb-2">Access Restricted</h3>
                   <p className="text-slate-400">This panel is only accessible to Telesales role</p>
                 </CardContent>
-              </Card>
-            )}
+              </Card>}
           </TabsContent>
 
           <TabsContent value="da-stock-health" className="space-y-4">
@@ -383,8 +318,6 @@ const Index = () => {
           </TabsContent>
         </Tabs>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default Index;
